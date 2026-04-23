@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADARSH M S — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --dark: #0a0a0a;
+    --panel: #0f0f0f;
+    --red: #e3000f;
+    --red-dim: #8b0008;
+    --orange: #ff6a00;
+    --orange-bright: #ff9500;
+    --glow-red: rgba(227,0,15,0.5);
+    --glow-orange: rgba(255,106,0,0.4);
+    --text: #d4d4d4;
+    --text-dim: #666;
+    --border: rgba(227,0,15,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* SCANLINES */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* NOISE GRAIN */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.5;
+    animation: grain 0.5s steps(2) infinite;
+  }
+
+  @keyframes grain {
+    0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)} 20%{transform:translate(3%,1%)} 30%{transform:translate(-1%,4%)} 40%{transform:translate(2%,-2%)} 50%{transform:translate(-3%,3%)} 60%{transform:translate(1%,-1%)} 70%{transform:translate(-2%,2%)} 80%{transform:translate(3%,-3%)} 90%{transform:translate(-1%,1%)}
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,5,5,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: var(--orange);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 10px var(--glow-orange);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--red);
+    text-shadow: 0 0 8px var(--glow-red);
+  }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 5% 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(227,0,15,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,106,0,0.05) 0%, transparent 60%),
+      linear-gradient(135deg, #050505 0%, #0d0302 100%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(227,0,15,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(227,0,15,0.06) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--orange);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-tag::before { content: '> '; color: var(--red); }
+
+  h1.glitch {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(2.2rem, 8vw, 5.5rem);
+    line-height: 1;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+    text-shadow:
+      0 0 20px rgba(255,255,255,0.1),
+      2px 0 0 var(--red),
+      -2px 0 0 var(--orange);
+  }
+
+  h1.glitch::before, h1.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  h1.glitch::before {
+    color: var(--red);
+    animation: glitch1 3s infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+    transform: translate(-3px, 0);
+    opacity: 0.7;
+  }
+
+  h1.glitch::after {
+    color: var(--orange);
+    animation: glitch2 3s infinite;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+    transform: translate(3px, 0);
+    opacity: 0.7;
+  }
+
+  @keyframes glitch1 {
+    0%,90%,100%{transform:translate(-3px,0);opacity:0}
+    92%{transform:translate(-3px,-2px);opacity:0.7}
+    94%{transform:translate(3px,2px);opacity:0.7}
+    96%{transform:translate(-3px,0);opacity:0.7}
+    98%{transform:translate(3px,-2px);opacity:0.7}
+  }
+
+  @keyframes glitch2 {
+    0%,90%,100%{transform:translate(3px,0);opacity:0}
+    93%{transform:translate(3px,2px);opacity:0.7}
+    95%{transform:translate(-3px,-2px);opacity:0.7}
+    97%{transform:translate(3px,0);opacity:0.7}
+    99%{transform:translate(-3px,2px);opacity:0.7}
+  }
+
+  .hero-subtitle {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.7rem, 2.5vw, 1rem);
+    color: var(--orange);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-desc {
+    max-width: 580px;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .contact-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.8rem;
+    background: rgba(227,0,15,0.04);
+    transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+
+  .contact-chip:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    box-shadow: 0 0 10px var(--glow-orange);
+  }
+
+  .contact-chip .icon { color: var(--red); font-size: 0.85rem; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    animation: pulse 2s infinite;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollLine 2s infinite;
+  }
+
+  @keyframes scrollLine {
+    0%{height:0;opacity:1} 100%{height:40px;opacity:0}
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 5%;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--red);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-label::before { content: '// '; }
+
+  h2.section-title {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  h2.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 60px; height: 2px;
+    background: linear-gradient(to right, var(--red), var(--orange));
+    box-shadow: 0 0 10px var(--glow-red);
+  }
+
+  /* ABOUT */
+  #about { background: var(--dark); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .stat-box {
+    border: 1px solid var(--border);
+    padding: 1.2rem;
+    background: rgba(227,0,15,0.03);
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .stat-box:hover {
+    border-color: var(--orange);
+    box-shadow: 0 0 15px rgba(255,106,0,0.15);
+  }
+
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.8rem;
+    background: linear-gradient(to right, var(--red), var(--orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+
+  .about-right {}
+
+  .info-block { margin-bottom: 1.5rem; }
+
+  .info-key {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--orange);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .info-val {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--black); }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--red), var(--orange), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.4rem; top: 0.3rem;
+    width: 12px; height: 12px;
+    border: 2px solid var(--red);
+    background: var(--black);
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px var(--glow-red);
+  }
+
+  .timeline-dot.active {
+    background: var(--red);
+    animation: dotPulse 2s infinite;
+  }
+
+  @keyframes dotPulse {
+    0%,100%{box-shadow:0 0 8px var(--glow-red)}
+    50%{box-shadow:0 0 18px var(--glow-red), 0 0 35px rgba(227,0,15,0.3)}
+  }
+
+  .tl-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--orange);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+  }
+
+  .tl-company {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+
+  .tl-role {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+
+  .tl-badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--red);
+    color: var(--red);
+    letter-spacing: 0.1em;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+
+  .tl-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* PROJECTS */
+  #projects { background: var(--dark); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    padding: 1.8rem;
+    background: rgba(10,10,10,0.8);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s, border-color 0.3s;
+  }
+
+  .project-card.visible { opacity: 1; transform: translateY(0); }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--red), var(--orange));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  .project-card:hover { border-color: rgba(255,106,0,0.4); }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: rgba(227,0,15,0.1);
+    position: absolute;
+    top: 1rem; right: 1.2rem;
+    line-height: 1;
+  }
+
+  .project-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-right: 3rem;
+  }
+
+  .project-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(255,106,0,0.3);
+    color: var(--orange);
+    letter-spacing: 0.05em;
+  }
+
+  /* SKILLS */
+  #skills { background: var(--black); }
+
+  .skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+
+  .skill-group-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--red);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-item {
+    margin-bottom: 1rem;
+  }
+
+  .skill-name {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .skill-bar {
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--red), var(--orange));
+    box-shadow: 0 0 6px var(--glow-orange);
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .skill-tags-section {
+    margin-top: 2rem;
+  }
+
+  .skills-tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+  }
+
+  .stag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .stag:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    box-shadow: 0 0 8px var(--glow-orange);
+    background: rgba(255,106,0,0.05);
+  }
+
+  /* EDUCATION */
+  #education { background: var(--dark); }
+
+  .edu-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .edu-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: rgba(5,5,5,0.9);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .edu-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle, rgba(227,0,15,0.1) 0%, transparent 70%);
+  }
+
+  .edu-card:hover { border-color: var(--red); }
+
+  .edu-year {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    color: var(--orange);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-degree {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-inst {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-board {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--red-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* LANGUAGES */
+  #languages { background: var(--black); padding: 60px 5%; }
+
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .lang-card {
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    text-align: center;
+    background: rgba(10,10,10,0.8);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .lang-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 0 15px rgba(255,106,0,0.1);
+  }
+
+  .lang-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .lang-level {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--orange);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .lang-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .lang-dot {
+    width: 8px; height: 8px;
+    border: 1px solid var(--border);
+    transform: rotate(45deg);
+    background: transparent;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .lang-dot.filled {
+    background: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 5px var(--glow-red);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 2rem 5%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 0.9rem;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-right {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* CORNER DECORATION */
+  .corner-deco {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--red);
+    border-style: solid;
+    opacity: 0.6;
+  }
+
+  .corner-deco.tl { top: 1rem; left: 1rem; border-width: 1px 0 0 1px; }
+  .corner-deco.tr { top: 1rem; right: 1rem; border-width: 1px 1px 0 0; }
+  .corner-deco.bl { bottom: 1rem; left: 1rem; border-width: 0 0 1px 1px; }
+  .corner-deco.br { bottom: 1rem; right: 1rem; border-width: 0 1px 1px 0; }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 0 4%; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: 0.6rem; }
+    #hero { padding: 80px 4% 60px; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    section { padding: 60px 4%; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .hero-contacts { flex-direction: column; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--red); }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AMS.exe</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Software Engineer // Requirement Analyst</div>
+    <h1 class="glitch" data-text="ADARSH M S">ADARSH M S</h1>
+    <div class="hero-subtitle">Full-Stack Dev &nbsp;|&nbsp; UI/UX &nbsp;|&nbsp; Tech Ops</div>
+    <p class="hero-desc">
+      B-Tech Computer Science graduate bridging technology, data, and business needs through innovative and scalable solutions. Currently engineering the future at Pearl Data Direct.
+    </p>
+    <div class="hero-contacts">
+      <div class="contact-chip"><span class="icon">📞</span> +91 9895816382</div>
+      <div class="contact-chip"><span class="icon">✉</span> msadarsh619@gmail.com</div>
+      <div class="contact-chip"><span class="icon">📍</span> Kottarakkara, Kollam, Kerala</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="corner-deco tl"></div>
+  <div class="corner-deco tr"></div>
+  <div class="corner-deco bl"></div>
+  <div class="corner-deco br"></div>
+  <div class="section-label">identity.profile</div>
+  <h2 class="section-title">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a Computer Science graduate with a passion for full-stack development, UI/UX design, and technical operations. I thrive at the intersection of technology and business — translating complex requirements into elegant, scalable software.</p>
+      <p>Currently serving as a Requirement Analyst at Pearl Data Direct (a Lulu Financial Holdings company), I bridge the gap between stakeholders and engineering teams, ensuring clarity, precision, and delivery excellence.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">2+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Major Projects</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Tech Stack</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Languages</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="info-block">
+        <div class="info-key">Current Role</div>
+        <div class="info-val">Technical Operations — Requirement Analyst</div>
+      </div>
+      <div class="info-block">
+        <div class="info-key">Current Employer</div>
+        <div class="info-val">Pearl Data Direct (Lulu Financial Holdings – Software Division)</div>
+      </div>
+      <div class="info-block">
+        <div class="info-key">Degree</div>
+        <div class="info-val">B.Tech Computer Science — APJ KTU, 2020–2024</div>
+      </div>
+      <div class="info-block">
+        <div class="info-key">Location</div>
+        <div class="info-val">Kottarakkara, Kollam, Kerala, India</div>
+      </div>
+      <div class="info-block">
+        <div class="info-key">Expertise</div>
+        <div class="info-val">Full-Stack Dev · UI/UX · Technical Ops · Data Analysis · GenAI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">career.log</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot active"></div>
+      <div class="tl-date">2025 — PRESENT</div>
+      <div class="tl-company">Pearl Data Direct · Lulu Financial Holdings – Software Division</div>
+      <div class="tl-role">Technical Operations — Requirement Analyst <span class="tl-badge">Active</span></div>
+      <div class="tl-desc">Bridging the gap between business stakeholders and engineering teams. Translating functional requirements into technical specifications, supporting technical operations and partnership management, and ensuring scalable delivery of software solutions within a fintech environment.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="tl-date">2024 — 2025</div>
+      <div class="tl-company">Allianz SE · Allianz Services · Allianz Technology</div>
+      <div class="tl-role">Client Service Executive</div>
+      <div class="tl-desc">Delivered technical support and client-facing services within one of the world's largest insurance groups. Handled customer relationship management, resolved technical issues, and collaborated cross-functionally to meet service SLAs.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">build.manifest</div>
+  <h2 class="section-title">Projects</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <div class="project-title">Route-Finding System</div>
+      <div class="project-desc">A scalable geospatial route-finding application using OpenStreetMap APIs. Implements Dijkstra's Algorithm for shortest-path computation with interactive map visualizations and real-time route planning powered by Leaflet.js and OSRM.</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">OSMnx</span>
+        <span class="tech-tag">NetworkX</span>
+        <span class="tech-tag">Leaflet.js</span>
+        <span class="tech-tag">OSRM</span>
+        <span class="tech-tag">Firebase</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <div class="project-title">Ride Booking System</div>
+      <div class="project-desc">A comprehensive ride-booking and management platform featuring user/driver modules, authentication, ride lifecycle management, fare estimation, and real-time status tracking — built on solid OOP principles.</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Java</span>
+        <span class="tech-tag">OOP</span>
+        <span class="tech-tag">JDBC</span>
+        <span class="tech-tag">MySQL</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <div class="project-title">gameON — Online Sports Hub</div>
+      <div class="project-desc">An interactive sports networking platform enabling players worldwide to connect, create profiles, organize matches, and communicate for cricket, football, tennis, and other sports. Focused on UX and community building.</div>
+      <div class="tech-tags">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">UI/UX</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">core.competencies</div>
+  <h2 class="section-title">Skills</h2>
+  <div class="skills-container">
+
+    <div>
+      <div class="skill-group-title">Programming & Dev</div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Java / Spring Boot</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Python</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>SQL & Databases</span><span>82%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="82"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Web / Full-Stack</span><span>78%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Hibernate / JDBC</span><span>75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skill-group-title">Data, AI & Analytics</div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Python for Data Analysis</span><span>77%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="77"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>NumPy / PyTorch</span><span>70%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Tableau</span><span>72%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="72"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Generative AI</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="skill-group-title">Tools & Business</div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Salesforce CRM</span><span>80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>Jira / Confluence</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>UI/UX Design</span><span>78%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-name"><span>SDLC / Tech Ops</span><span>85%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="skill-tags-section reveal" style="margin-top:3rem;">
+    <div class="skill-group-title">Soft Skills Matrix</div>
+    <div class="skills-tag-cloud">
+      <span class="stag">Team Leadership</span>
+      <span class="stag">Cross-Functional Collaboration</span>
+      <span class="stag">Stakeholder Management</span>
+      <span class="stag">Strategic Planning</span>
+      <span class="stag">Client Communication</span>
+      <span class="stag">Presentation & Storytelling</span>
+      <span class="stag">Active Listening</span>
+      <span class="stag">Creative Problem Solving</span>
+      <span class="stag">Time Management</span>
+      <span class="stag">Attention to Detail</span>
+      <span class="stag">Analytical Thinking</span>
+      <span class="stag">Adaptability</span>
+      <span class="stag">GenAI Adoption</span>
+      <span class="stag">Mentoring</span>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">academic.history</div>
+  <h2 class="section-title">Education</h2>
+  <div class="edu-cards">
+
+    <div class="edu-card reveal">
+      <div class="edu-year">2020 — 2024</div>
+      <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+      <div class="edu-inst">College of Engineering Kottarakkara</div>
+      <div class="edu-board">APJ Abdul Kalam Technological University</div>
+    </div>
+
+    <div class="edu-card reveal">
+      <div class="edu-year">2018 — 2020</div>
+      <div class="edu-degree">Higher Secondary Education</div>
+      <div class="edu-inst">Govt. Model Higher Secondary School Vettikkavala</div>
+      <div class="edu-board">Kerala State Board of Higher Secondary Education</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LANGUAGES -->
+<section id="languages">
+  <div class="section-label">language.protocols</div>
+  <h2 class="section-title">Languages</h2>
+  <div class="lang-grid">
+
+    <div class="lang-card reveal">
+      <div class="lang-name">English</div>
+      <div class="lang-level">Fluent</div>
+      <div class="lang-dots">
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+      </div>
+    </div>
+
+    <div class="lang-card reveal">
+      <div class="lang-name">Malayalam</div>
+      <div class="lang-level">Native</div>
+      <div class="lang-dots">
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+      </div>
+    </div>
+
+    <div class="lang-card reveal">
+      <div class="lang-name">Hindi</div>
+      <div class="lang-level">Advanced</div>
+      <div class="lang-dots">
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot filled"></div>
+        <div class="lang-dot"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">ADARSH M S</div>
+  <div class="footer-right">© 2026 · ADARSH M S · ALL SYSTEMS OPERATIONAL</div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+
+        // Animate skill bars
+        entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .timeline-item, .project-card, .edu-card').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Also observe skill sections
+  document.querySelectorAll('#skills .skills-container > div').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Animate skill bars on section enter
+  const skillObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+          setTimeout(() => {
+            bar.style.width = bar.dataset.width + '%';
+          }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
+
+  // Stagger project cards
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 0.15) + 's';
+  });
+
+  // Stagger timeline items
+  document.querySelectorAll('.timeline-item').forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.2) + 's';
+    observer.observe(item);
+  });
+</script>
+</body>
+</html>
